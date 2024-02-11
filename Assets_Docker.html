@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href='https://fonts.googleapis.com/css?family=Rubik' rel='stylesheet'>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Section</title>
+  <style>
+    /* CSS Reset */
+    * {
+      margin: 5px;
+      padding-top: 0;
+      box-sizing: none;
+    }
+
+    body {
+      font-family: Rubik, sans-serif;
+      background-color: none;
+    }
+
+    /* Add rounded edges to submenus and input boxes */
+    .submenu {
+      border-radius: 10px; /* Adjust as needed */
+    }
+
+    .input-panel input {
+      height:30px;
+      font-family:"Rubik";
+      border-radius: 10px;
+      border-color: none;
+text-align: center;
+    }
+
+    /* Increase main menu image size and add padding */
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    /* Modify the .main-btn class */
+.main-btn {
+  position: relative;
+  padding: 5%; /* Reduce the padding to decrease space */
+  height: 199px;
+  width: 190px;
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.main-btn:hover img {
+  transform: scale(1.04); /* Increase the size of the image on hover */
+  transition: transform 0.3s ease; /* Add a smooth transition */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+    }
+    
+.main-btn img {
+  max-width: 100%; /* Ensure the image fits within the button */
+  max-height: 100%; /* Ensure the image fits within the button */
+}
+
+    ::placeholder {
+      text-align: center;
+    }
+
+    :-ms-input-placeholder {
+      text-align: center;
+    }
+
+    ::-ms-input-placeholder {
+      text-align: center;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 40%, 60%, 80%, 100% {
+        transform: translateY(0);
+      }
+      10% {
+        transform: translateY(-5px);
+      }
+      30% {
+        transform: translateY(-10px);
+      }
+      50% {
+        transform: translateY(-5px);
+      }
+      70% {
+        transform: translateY(-2.5px);
+      }
+      90% {
+        transform: translateY(-5px);
+      }
+    }
+
+    .bounce-red-outline {
+      border: 2px solid #FF0000;
+      border-color: #FF0000;
+      animation: bounce 2s ease-in-out;
+    }
+
+    .input-panel {
+      display: none;
+      justify-content: space-between;
+align-items: center; /* Center vertically */
+  text-align: center;
+    }
+
+    #learnerName, #learnerNumber, #learnerEmail {
+      flex: 1;
+      margin: 0 10px;
+    }
+
+    /* Modify the .submenu class */
+.submenu {
+  display: none;
+  position: absolute;
+  top: 50%;  /* Start positioning at the vertical center of main-btn */
+  left: 50%;  /* Start positioning at the horizontal center of main-btn */
+  transform: translate(+50%, -50%);  /* Center the submenu both horizontally and vertically relative to main-btn */
+  z-index: 1;
+  background-color: #004642 ;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  width: auto;
+  white-space: nowrap;
+}
+/* Modify the .link class */
+.link {
+  font-weight: normal;
+  margin: 0px 0;
+  color: #2df8c5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px; /* Adjust as needed */
+  padding: 10px; /* Add padding around the links */
+}
+
+
+    .link a {
+      text-decoration: none;
+      color: #2df8c5;
+    }
+
+    .gmail-btn img,
+    .whatsapp-btn img {
+      height: 20px;
+      width: 20px;
+    }
+
+    /* Add your keyframes animation here */
+  </style>
+
+</head>
+<body>
+
+<div class="input-panel">
+  <input type="text" id="learnerName" placeholder="Learner’s Name">
+  <input type="text" id="learnerNumber" placeholder="Learner’s Number">
+</div>
+
+<div class="buttons">
+  <!-- FSD - Full Stack button -->
+  <button class="main-btn" data-program-name="FSD: Full Stack Specialisation" onclick="showSubmenu('fsd-fullstack', this)">
+      <img src="https://www.dropbox.com/scl/fi/wsd4sph8a0c9s91jogixi/FSD-Full-Stack-Specialization.png?rlkey=ozs6q4vhyaocwdh29f0tbuxo1&raw=1" alt="FSD - Full Stack">
+  </button>
+
+  <!-- FSD - Backend button -->
+  <button class="main-btn" data-program-name="FSD: Back-end Specialisation" onclick="showSubmenu('fsd-backend', this)">
+    <img src="https://www.dropbox.com/scl/fi/v2ioiswdvhu5wteayt3pm/Backend-Specialization.png?rlkey=ez59wjw63iq1a8to0z3hbj0a2&raw=1" alt="FSD - Backend">
+  </button>
+
+  <!-- QA Automation button -->
+  <button class="main-btn" data-program-name="QA Automation" onclick="showSubmenu('qa-automation', this)">
+    <img src="https://www.dropbox.com/scl/fi/b4zx53jx13329zjtlbato/QA-Automation.png?rlkey=gzyrqy6nva431nfwstzra5by5&raw=1" alt="QA Automation">
+  </button>
+
+  <!-- FSD+ button -->
+  <button class="main-btn" data-program-name="FSD(Plus)" onclick="showSubmenu('fsd-plus', this)">
+    <img src="https://www.dropbox.com/scl/fi/02mun2iz1asx7e5xnhiqc/FSD-PLUS.png?rlkey=l41x8zjje3g99t7qisjm3kvg2&raw=1" alt="FSD+">
+  </button>
+</div>
+
+<!-- Submenus for each button -->
+<div id="fsd-fullstack" class="submenu">
+  <!-- Profile Fitment Form -->
+  <div class="link">
+    <a href="https://rebrand.ly/crio-profile-fitment-form">Profile Fitment Form</a>
+    <span>
+        <a href="#" class="whatsapp-btn" data-text="It was a pleasure speaking with you earlier today. Here is the Profile Fitment form. Please ensure you fill it at your earliest convenience, so that we can better understand how to serve you better. 
+%0ALink: https://rebrand.ly/crio-profile-fitment-form
+%0AShould you have any questions or require further assistance, please don't hesitate to reach out to me." id="whatsapp-button-FSD:FS-PFF"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></a>
+    </span>
+  </div>
+  <!-- Brochure -->
+  <div class="link">
+    <a href="https://drive.google.com/file/d/1-fqCD_RqujdA1II7wyoeSc8kJzDt5xgo/view">Brochure</a>
+    <span>
+        <a href="#" class="whatsapp-btn" data-text="Following up on our conversation, I wanted to share a little more detail about the program we discussed.
+
+%0AYou can check out the curriculum of the *Fellowship Program in Software Development* here: https://drive.google.com/file/d/1-fqCD_RqujdA1II7wyoeSc8kJzDt5xgo/view. 
+%0AThis will give you a detailed understanding of all the concepts you will master throughout your learning journey at Crio.
+
+%0AIf you have any questions on this, feel free to reach out to me." id="whatsapp-button-FSD:FS-Brochure"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></a>
+    </span>
+  </div>
+  <!-- Portfolio -->
+  <div class="link">
+    <a href="https://www.crio.do/learn/portfolio/full-stack/?name=Crio%20Demo">Portfolio</a>
+    <span>
+        <a href="#" class="whatsapp-btn" data-text="Your journey at Crio does not end with just building projects. Simultaneously you will be building a rockstar portfolio to impress recruiters and land your dream job. %0AHere’s how your portfolio will look like soon: https://www.crio.do/learn/portfolio/full-stack/?name={LEARNER_NAME_PLACEHOLDER}" id="whatsapp-button-FSD:FS-Portfolio"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></a>
+    </span>
+  </div>
+</div>
+
+<!-- Similarly for other buttons -->
+<div id="fsd-backend" class="submenu">
+  <!-- Profile Fitment Form -->
+  <div class="link">
+    <a href="https://rebrand.ly/crio-profile-fitment-form">Profile Fitment Form</a>
+    <span>
+        <a href="#" class="whatsapp-btn" data-text="It was a pleasure speaking with you earlier today. Here is the Profile Fitment form. Please ensure you fill it at your earliest convenience, so that we can better understand how to serve you better. 
+%0ALink: https://rebrand.ly/crio-profile-fitment-form
+%0AShould you have any questions or require further assistance, please don't hesitate to reach out to me." id="whatsapp-button-FSD:BS-PFF-2"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></a>
+    </span>
+  </div>
+  <!-- Brochure -->
+  <div class="link">
+    <a href="https://drive.google.com/file/d/1-fqCD_RqujdA1II7wyoeSc8kJzDt5xgo/view">Brochure</a>
+    <span>
+        <a href="#" class="whatsapp-btn" data-text="Following up on our conversation, I wanted to share a little more detail about the program we discussed.
+
+%0AYou can check out the curriculum of the *Fellowship Program in Software Development* here: https://drive.google.com/file/d/1-fqCD_RqujdA1II7wyoeSc8kJzDt5xgo/view. 
+%0AThis will give you a detailed understanding of all the concepts you will master throughout your learning journey at Crio.
+
+%0AIf you have any questions on this, feel free to reach out to me.
+" id="whatsapp-button-FSD:BS-Brochure-2"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></a>
+    </span>
+  </div>
+  <!-- Portfolio -->
+  <div class="link">
+    <a href="https://www.crio.do/learn/portfolio/backend/?name=Crio%20Demo">Portfolio</a>
+    <span>
+        <a href="#" class="whatsapp-btn" data-text="Your journey at Crio does not end with just building projects. Simultaneously you will be building a rockstar portfolio to impress recruiters and land your dream job. %0AHere’s how your portfolio will look like soon: https://www.crio.do/learn/portfolio/backend/?name={LEARNER_NAME_PLACEHOLDER}" id="whatsapp-button-FSD:BS-Portfolio-2"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></a>
+    </span>
+  </div>
+</div>
+
+<div id="qa-automation" class="submenu">
+  <!-- Profile Fitment Form -->
+  <div class="link">
+    <a href="https://rebrand.ly/crio-profile-fitment-form">Profile Fitment Form</a>
+    <span>
+        <a href="#" class="whatsapp-btn" data-text="It was a pleasure speaking with you earlier today. Here is the Profile Fitment form. Please ensure you fill it at your earliest convenience, so that we can better understand how to serve you better. 
+%0ALink: https://rebrand.ly/crio-profile-fitment-form
+%0AShould you have any questions or require further assistance, please don't hesitate to reach out to me." id="whatsapp-button-QA-PFF"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></a>
+    </span>
+  </div>
+  <!-- Brochure -->
+  <div class="link">
+    <a href="https://drive.google.com/file/d/1LJTGe_mtrcQuOy0U3RB8QD3SUfPTUwWN/view">Brochure</a>
+    <span>
+        <a href="#" class="whatsapp-btn" data-text="Following up on our conversation, I wanted to share a little more detail about the program we discussed.
+
+%0AYou can check out the curriculum of the *Fellowship Program in QA Automation (SDET)* here: https://drive.google.com/file/d/1LJTGe_mtrcQuOy0U3RB8QD3SUfPTUwWN/view. 
+%0AThis will give you a detailed understanding of all the concepts you will master throughout your learning journey at Crio.
+
+%0AIf you have any questions on this, feel free to reach out to me.
+" id="whatsapp-button-QA-Brochure"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></a>
+    </span>
+  </div>
+  <!-- Portfolio -->
+  <div class="link">
+    <a href="https://www.crio.do/learn/portfolio/qa-masters/?name=Crio%20Demo">Portfolio</a>
+    <span>
+        <a href="#" class="whatsapp-btn" data-text="Your journey at Crio does not end with just building projects. Simultaneously you will be building a rockstar portfolio to impress recruiters and land your dream job. %0AHere’s how your portfolio will look like soon: https://www.crio.do/learn/portfolio/qa-masters/?name={LEARNER_NAME_PLACEHOLDER}" id="whatsapp-button-QA-Portfolio"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></a>
+    </span>
+  </div>
+</div>
+
+<div id="fsd-plus" class="submenu">
+  <!-- Profile Fitment Form -->
+  <div class="link">
+    <a href="https://www.crio.do/magic/trial-workshop-sdplus">Profile Fitment Form  </a>
+    <span>
+        <a href="#" class="whatsapp-btn" data-text="It was a pleasure speaking with you earlier today. Here is the Profile Fitment form. Please ensure you fill it at your earliest convenience, so that we can better understand how to serve you better. 
+%0ALink: https://rebrand.ly/crio-fsd-plus-profile-fitment-form
+%0AShould you have any questions or require further assistance, please don't hesitate to reach out to me." id="whatsapp-button-FSD-Plus-PFF"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></a>
+    </span>
+  </div>
+  <!-- Brochure -->
+  <div class="link">
+    <a href="https://drive.google.com/file/d/1FBIZdDQS3Qcx6If1P22wPjFf0TzptJyq/view">Brochure</a>
+    <span>
+        <a href="#" class="whatsapp-btn" data-text="Following up on our conversation, I wanted to share a little more detail about the program we discussed.
+
+%0AYou can check out the curriculum of the *Fellowship Program in Software Development Plus* here:  https://drive.google.com/file/d/1FBIZdDQS3Qcx6If1P22wPjFf0TzptJyq/view. 
+%0AThis will give you a detailed understanding of all the concepts you will master throughout your learning journey at Crio.
+%0AIf you have any questions on this, feel free to reach out to me.
+" id="whatsapp-button-FSD-Plus-Brochure"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></a>
+    </span>
+  </div>
+</div>
+<script>
+// Variables for elements
+let submenus = document.querySelectorAll('.submenu');
+let mainBtns = document.querySelectorAll('.main-btn');
+let currentlyDisplayedMenu = null;
+
+// Function to validate number input
+function validateNumberInput(input) {
+    // Ensure only numbers are entered
+    input.value = input.value.replace(/[^0-9]/g, '');
+    // Limit to 10 digits
+    input.value = input.value.slice(0, 10);
+}
+
+// Show submenu function
+function showSubmenu(menuId, clickedBtn) {
+    let submenu = document.getElementById(menuId);
+    let inputPanel = document.querySelector('.input-panel');
+
+    if (!submenu) return;
+
+    if (currentlyDisplayedMenu && currentlyDisplayedMenu.id === menuId) {
+        currentlyDisplayedMenu.style.display = 'none';
+        currentlyDisplayedMenu = null;
+        inputPanel.style.display = 'none';
+        return;
+    }
+
+    if (currentlyDisplayedMenu) {
+        currentlyDisplayedMenu.style.display = 'none';
+    }
+    inputPanel.style.display = 'block';
+
+    let rect = clickedBtn.getBoundingClientRect();
+    submenu.style.top = `${rect.bottom}px`;
+    submenu.style.left = `${rect.left}px`;
+    submenu.style.display = 'block';
+
+    let submenuRect = submenu.getBoundingClientRect();
+    let viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+    if (submenuRect.right > viewportWidth) {
+        submenu.style.left = `${rect.left - (submenuRect.right - viewportWidth)}px`;
+    }
+
+    currentlyDisplayedMenu = submenu;
+
+    // Send data to Google Apps Script
+   sendClickDataToGAS(clickedBtn.dataset.programName);
+}
+
+// Function to send data to Google Apps Script
+function sendClickDataToGAS(programName) {
+  let gasUrl = 'https://script.google.com/macros/s/AKfycbxp5FecxegZIgDJvkq7LRJrk-4BC0t7_l36TlGoTKPHV8iPuR24MLC0XCb_X7fhuX8W/exec';
+  let queryString = `?action=click&programName=${encodeURIComponent(programName)}`;
+
+  fetch(gasUrl + queryString)
+    .then(response => response.text())
+    .then(result => console.log('GAS response:', result))
+    .catch(error => console.error('Error:', error));
+}
+
+
+// Helper function to handle empty input and add bounce effect
+function handleEmptyInput(inputElement) {
+    inputElement.classList.add('bounce-red-outline');
+    inputElement.addEventListener('animationend', function() {
+        inputElement.classList.remove('bounce-red-outline');
+    });
+}
+
+// Close submenu if clicked outside
+document.addEventListener('click', function(event) {
+    if (currentlyDisplayedMenu && !event.target.closest('.submenu') && !event.target.closest('.main-btn')) {
+        currentlyDisplayedMenu.style.display = 'none';
+        currentlyDisplayedMenu = null;
+    }
+});
+
+// Ensure the learnerNumber input only accepts numbers and is limited to 10 digits
+let learnerNumberInput = document.getElementById('learnerNumber');
+if (learnerNumberInput) {
+    learnerNumberInput.addEventListener('input', function() {
+        validateNumberInput(learnerNumberInput);
+    });
+}
+
+// Attach event listener to main buttons to show submenus
+mainBtns.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.stopPropagation(); // prevent the document click event from hiding the submenu immediately
+        let menuId = btn.getAttribute('data-menu');
+        showSubmenu(menuId, btn);
+    });
+});
+
+// Actions for WhatsApp buttons
+document.querySelectorAll('.whatsapp-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        let learnerName = document.getElementById('learnerName').value;
+        let learnerNumber = document.getElementById('learnerNumber').value;
+
+        if (!learnerName || !learnerNumber) {
+            if (!learnerName) handleEmptyInput(document.getElementById('learnerName'));
+            if (!learnerNumber) handleEmptyInput(document.getElementById('learnerNumber'));
+            return;
+        }
+
+        let fullNumber = `+91${learnerNumber}`;
+        let text = btn.getAttribute('data-text').replace('{LEARNER_NAME_PLACEHOLDER}', encodeURIComponent(learnerName));
+        
+        window.open(`https://web.whatsapp.com/send?phone=${fullNumber}&text=Hello ${learnerName}, ${text}`, '_blank');
+
+        // Send data to Google Apps Script for tracking WhatsApp button click
+        sendClickDataToGAS(btn.id); // Track button ID
+    });
+});
+
+// Actions for Gmail buttons
+document.querySelectorAll('.gmail-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        let learnerName = document.getElementById('learnerName').value;
+        let learnerEmail = document.getElementById('learnerEmail').value;
+
+        if (!learnerName || !learnerEmail) {
+            if (!learnerName) handleEmptyInput(document.getElementById('learnerName'));
+            if (!learnerEmail) handleEmptyInput(document.getElementById('learnerEmail'));
+            return;
+        }
+
+        let subject = encodeURIComponent(btn.getAttribute('data-subject'));
+        let body = encodeURIComponent(`Hello ${learnerName},\n\n${btn.getAttribute('data-body')}`);
+        
+        // Open the precomposed email in Gmail in a new tab
+        window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${learnerEmail}&su=${subject}&body=${body}`, '_blank');
+
+        // Send data to Google Apps Script for tracking Gmail button click
+        sendClickDataToGAS(btn.id); // Track button ID
+    });
+});
+</script>
+
+</body>
+</html>
