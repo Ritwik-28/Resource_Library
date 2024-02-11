@@ -11,3 +11,12 @@ The custom tracking stores every click made in google sheet with the tracking id
 * Also has custom tracking script.
 ![image](https://github.com/Ritwik-28/Resource_Library/assets/43515034/7e844f64-d165-4937-b773-7460eaef6cb3)
 
+# Resource_Library_Image_Carousel
+![image](https://github.com/Ritwik-28/Resource_Library/assets/43515034/89a63209-f6f1-4c02-88da-fccacebb61b7)
+
+# Resource_Library_Content_Table
+![image](https://github.com/Ritwik-28/Resource_Library/assets/43515034/a6f73fa9-ffe9-4635-a7d9-438881cc330b)
+* JS based rows.
+* Custom Tracking to track both clicks to copy and download.
+* Includes modals to view the images.
+* Toolkits and filters for ease.
