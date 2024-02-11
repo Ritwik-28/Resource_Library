@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='https://fonts.googleapis.com/css?family=Rubik' rel='stylesheet'>
+  <title>Sample Session</title>
+ <style>
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+}
+::placeholder { /* For modern browsers */
+            text-align: center;
+        }
+
+        :-ms-input-placeholder { /* For Internet Explorer 10-11 */
+            text-align: center;
+        }
+
+        ::-ms-input-placeholder { /* For Microsoft Edge */
+            text-align: center;
+        }
+
+
+body {
+  font-family: "Rubik", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #004642;
+}
+.tab__content-box {
+  font-family:"Rubik"
+  flex-basis: calc(50% - 16px);
+  background: #ffffff;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-bottom: 0px;
+  margin-left: 15px;
+  height:140px;
+  justify-content: center;
+  display: inline-block; /* Show as inline block to place side by side */
+  width: calc(40%); /* Width adjusted to fit two boxes per row */
+  vertical-align: top; /* Align the boxes to the top */
+}
+
+/* Ensuring the first tab is active by default */
+.tab_list .tab_item:first-child {
+  color: none
+}
+.tab_list .tab_item:first-child:before {
+  visibility: visible;
+}
+
+   .content-item-fsd {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Adjust the gap between elements as needed */
+  margin-bottom: 7px; /* Space between content items */
+}
+   
+   
+.container {
+  width: 1090px;
+  margin: 0 auto;
+  max-width: 100%;
+  padding-right: 16px;
+  padding-left: 16px;
+  background-color:#004246;
+}
+
+section {
+  background: #004246;
+  padding: 10px 0;
+}
+
+.tab__list {
+  display: flex;
+  margin-bottom: 16px;
+  justify-content: center;
+}
+
+.tab__item {
+  overflow: hidden;
+  cursor: pointer;
+  padding: 8px 8px;
+  margin-right: 24px;
+  text-shadow: 0 0 0.5px currentColor;
+  letter-spacing: 1px;
+  transition: 0.2s;
+  font-size: 18px;
+  position: relative;
+  color: #2df8c5;
+}
+
+   .tab__item:hover{
+     color:white;
+   }
+   
+.tab__item:before {
+  content: "";
+  position: absolute;
+  top: 95%;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background: #2df8c5;
+  transition: 0.2s;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.tab__item.is--active {
+  color: #ffffff;
+  position: relative;
+}
+
+.tab__item.is--active:before {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tab__content {
+  padding: 0px;
+  margin-left:54px;
+  background: none;
+  border-radius: 10px 10px 10px;
+  display: flex;
+  flex-wrap: wrap; /* If you want to keep items from stretching across the full width on larger screens */
+  gap: 13px; /* Adds space between boxes */
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tab__content-item {
+  flex-basis: calc(100%); /* Adjust width to fit two items per row */
+  display: none; /* Instead of 'none' */
+  background: none;
+  padding: 6px;
+  justify-content: center;
+  border-radius: 8px;
+  margin-top:5px;
+  margin-left: 0px; /* Adds space below each item */
+}
+
+.tab__content-item.is--active {
+  display: block;
+}
+
+.tab__content-title {
+  padding: 24px 24px 24px 0;
+}
+
+.tab .tab .tab__item {
+  font-size: 16px;
+}
+
+.tab .tab .tab__content {
+  padding: 0;
+}
+
+button {
+  font-family:"Rubik";
+  margin-left: 10px;
+  margin-right:07px;
+  padding: 8px 30px; /* optional: for better appearance */
+  cursor: pointer; /* to show a hand pointer on hover */
+  /* remove default border */
+  background-color: #004642; /* optional: give a color */
+  color: white; /* white text */
+  transition: background-color 0.3s;
+  border:none;
+  border-size:.2px;
+  border-radius: 10px;/* smooth color transition on hover */
+}
+
+button:hover {
+  background-color: #2df8c5;
+  color:#000;
+  border-size:none;
+}
+
+/* Adding styles for the WhatsApp button */
+button.whatsapp {
+  background: url("path_to_whatsapp_logo.png") no-repeat center center; /* replace 'path_to_whatsapp_logo.png' with the path to your WhatsApp logo image */
+  background-color: #25d366;
+  background-size: 50px; /* adjust based on your icon size */
+  width: 43px; /* width of the button */
+  height: 43px; /* height of the button */
+}
+.input-panel {
+  display: flex;
+  justify-content: center; /* centering the input boxes */
+  margin-bottom: 20px;
+  margin-left:-40px;
+text-align: center;
+}
+
+.input-panel input {
+  margin: 0 10px; /* gives space between the inputs */
+  padding: 8px; /* optional: for better appearance */
+  border: 1px solid #ccc;
+  border-radius:10px;
+  transition: border 0.3s; /* smooth transition for border changes */
+  height: 40px; /* This sets the height of the input box */
+  line-height: 40px; /* This sets the line height to be the same as the box height, centering the text vertically */
+  padding: 0 10px;
+  
+text-align: center;
+}
+
+
+.input-panel input.error {
+  border-color: red; /* red border for error */
+  animation: bounce 0.5s; /* bounce animation */
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-5px);
+  }
+  60% {
+    transform: translateY(-3px);
+  }
+}
+   /* Tag styles */
+.tag {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family:"Rubik";
+  font-weight: normal;
+  color: white;
+  position: absolute;
+  top: 10px; /* Adjust as necessary */
+  left: 348px; /* Adjust as necessary */
+  z-index: 10;
+}
+
+.tag-beginner {
+  background-color: #4CAF50; /* Green background for beginners */
+}
+
+.tag-intermediate {
+  background-color: #FF9800; /* Orange background for intermediate */
+}
+
+/* Adjust the .tab__content-box positioning */
+.tab__content-box {
+  position: relative; /* Added to position the tags absolutely relative to the box */
+  /* ... rest of the styles */
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(8px);
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    z-index: 100000; /* Set a higher z-index value */
+    background-color: #fefefe;
+}
+
+   .whatsapp-button{
+     cursor:pointer;
+   }
+   
+.close {
+    position: absolute;
+    top: -10px;
+    right: 2px;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 100000; /* Set an even higher z-index value */
+}
+       .whatsapp-btn img {
+      cursor:pointer;
+      height: 34px;
+      width: 34px;
+      margin-bottom:-9.5px;
+    }
+   
+          .whatsapp-btn img:hover {
+      transform: scale(1.07); /* Increase the size of the image on hover */
+  transition: transform 0.3s ease; /* Add a smooth transition */
+
+    }
+   .walkthrough {
+    text-decoration: none; /* Removes underline */
+    color: #000; /* Set the text color */
+    transition: color 0.3s ease; /* Smooth transition for the color */
+     margin-left:50px;
+  }
+
+  .walkthrough:hover {
+    color: #555; /* Color when hovered */
+    cursor: pointer; /* Change cursor on hover */
+  }
+
+  /* Optional: Add a little animation to the underline on hover */
+  .walkthrough::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: #555;
+    transition: width 0.3s;
+  }
+
+  .walkthrough:hover::after {
+    width: 100%; /* Full width on hover */
+  }
+    </style>
+</head>
+<body>
+<section class="section">
+  <div class="input-panel">
+    <input type="text" id="learnerName" placeholder="Enter learner's name">
+    <input type="text" pattern="\d{10}" id="learnerNumber" placeholder="Enter learner's number" oninput="validateNumberInput(event)">
+  </div>
+  <div class="container">
+    <div class="tab">
+      <div class="tab__list">
+        <div class="tab__item">DSA</div>
+        <div class="tab__item">Full Stack</div>
+        <div class="tab__item">Backend</div>
+        <div class="tab__item">QA Automation</div>
+        <div class="tab__item">System Design</div>
+        <div class="tab__item">Foundation</div>
+        <div class="tab__item">FSD PLUS</div>
+      </div>
+      <div class="tab__content">
+        <!-- DSA Content -->
+        <div class="tab__content-item is--active" id="content-dsa">
+          <div class="tab__content-box">
+            <span class="tag tag-beginner">Beginner</span>
+            <h4>Recursion in DSA</h4>
+            <p>Get introduced to the concept of Recursion in DSA and solve problems using recursion.</p><br>
+             <button class="openModal" data-modal="videoModal1">View</button>
+            <div id="videoModal1" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="videoModal1">&times;</span>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/YeMznlzDlJw" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div> 
+            
+            <whatsapp-btn onclick="shareOnWhatsApp('https://www.youtube.com/watch?v=YeMznlzDlJw')" class="whatsapp-btn" id="WhatsApp:DSA-Beginner"><img  src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></b>
+             <span>
+          </div>
+          <div class="tab__content-box">
+            <span class="tag tag-intermediate">Intermediate</span>
+            <h4>Stack, Queue and Hash</h4>
+            <p>Learn how to solve Stack, Queue and Hash related DSA problems.</p><br>
+            <button class="openModal" data-modal="videoModal2">View</button>
+            <div id="videoModal2" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="videoModal2">&times;</span>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/ot2XHkyD1t4" frameborder="0" allowfullscreen></iframe>
+        </div>
+</div>
+            <whatsapp-btn onclick="shareOnWhatsApp('https://www.youtube.com/watch?v=ot2XHkyD1t4')" class="whatsapp-btn" id="WhatsApp:DSA-Intermediate"><img  src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></button>
+          </div>
+        </div>
+        <!-- Full Stack Content -->
+        <div class="tab__content-item" id="content-fullstack">
+          <div class="tab__content-box">
+             <span class="tag tag-beginner">Beginner</span>
+            <h4>Flexbox CSS</h4>
+            <p>Learn how to use Flexbox, a CSS 3 web layout model that allows responsive elements within a container to be automatically arranged depending on viewport size.</p>
+            <button class="openModal" data-modal="videoModal3">View</button>
+            <div id="videoModal3" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="videoModal3">&times;</span>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/EsWsEEkKr5w" frameborder="0" allowfullscreen></iframe>
+        </div>
+</div>
+           <whatsapp-btn onclick="shareOnWhatsApp('https://www.youtube.com/watch?v=EsWsEEkKr5w')"class="whatsapp-btn" id="WhatsApp:FS-Beginner"><img  src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></button>
+          </div>
+          <div class="tab__content-box">
+            <span class="tag tag-intermediate">Intermediate</span>
+            <h4>Form Validation & Local Storage</h4>
+            <p>Learn how to do Data validation in web based forms and Local storage on browser.</p><br>
+            <button class="openModal" data-modal="videoModal4">View</button>
+            <div id="videoModal4" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="videoModal4">&times;</span>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/FHxMowbrgJI" frameborder="0" allowfullscreen></iframe>
+        </div>
+</div>
+           <whatsapp-btn onclick="shareOnWhatsApp('https://www.youtube.com/watch?v=FHxMowbrgJI')"class="whatsapp-btn" id="WhatsApp:FS-Intermediate"><img  src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></button>
+          </div>
+        </div>
+        <!-- Backend Content -->
+        <div class="tab__content-item is--active" id="content-backend">
+          <div class="tab__content-box">
+            <span class="tag tag-beginner">Beginner</span>
+            <h4>Inheritance in Java</h4>
+                    <p>Learn the concepts of Inheritance and its types, Final Class and Final Methods in Java.</p><br>
+            <button class="openModal" data-modal="videoModal5">View</button>
+            <div id="videoModal5" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="videoModal5">&times;</span>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/FBVZ-u0zrJE" frameborder="0" allowfullscreen></iframe>
+        </div>
+</div>
+                    <whatsapp-btn onclick="shareOnWhatsApp('https://www.youtube.com/watch?v=FBVZ-u0zrJE')"class="whatsapp-btn" id="WhatsApp:BS-Beginner"><img  src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></button>
+                </div>
+          <div class="tab__content-box">
+            <span class="tag tag-intermediate">Intermediate</span>
+            <h4>REST API Backend - Beneath the Hood</h4>
+            <p>Learn how REST API functions and execute it from the Terminal.</p><br>
+                      <button class="openModal" data-modal="videoModal6">View</button>
+            <div id="videoModal6" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="videoModal6">&times;</span>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/ONSRC-L9Xo0" frameborder="0" allowfullscreen></iframe>
+        </div>
+</div>
+            <whatsapp-btn onclick="shareOnWhatsApp('https://www.youtube.com/watch?v=ONSRC-L9Xo0')"class="whatsapp-btn" id="WhatsApp:BS-Intermediate"><img  src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></button>
+          </div>
+        </div>
+        <!-- QA Automation -->
+        <div class="tab__content-item is--active" id="content-foundation">
+          <div class="tab__content-box">
+             <span class="tag tag-beginner">Beginner</span>
+            <h4>Selenium Basics + HTML</h4>
+            <p>Learn about Selenium and Chrome Developer Tools</p><br><br>
+            <button class="openModal" data-modal="videoModal7">View</button>
+            <div id="videoModal7" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="videoModal7">&times;</span>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/Ej4X0zLkN9Y" frameborder="0" allowfullscreen></iframe>
+        </div>
+</div>
+            <whatsapp-btn onclick="shareOnWhatsApp('https://www.youtube.com/watch?v=Ej4X0zLkN9Y')"class="whatsapp-btn" id="WhatsApp:QA-Beginner"><img  src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></button>
+          </div>
+          <div class="tab__content-box">
+            <span class="tag tag-intermediate">Intermediate</span>
+            <h4>Page Object Model</h4>
+            <p>Learn about Design patterns: Page object model, singleton pattern and more.</p><br>
+            <button class="openModal" data-modal="videoModal8">View</button>
+            <div id="videoModal8" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="videoModal8">&times;</span>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/rHT-kawy6xg" frameborder="0" allowfullscreen></iframe>
+        </div>
+</div>
+            <whatsapp-btn onclick="shareOnWhatsApp('https://www.youtube.com/watch?v=rHT-kawy6xg')"class="whatsapp-btn" id="WhatsApp:QA-Intermediate"><img  src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></button>
+          </div>
+        </div>
+        <!-- System Design -->
+        <div class="tab__content-item is--active" id="content-system-design">
+          <div class="tab__content-box">
+             <span class="tag tag-beginner">Beginner</span>
+            <h4>Object Modeling</h4>
+            <p>Learn how to design entities and relationships as part of Low-Level Design for problems</p><br>
+                        <button class="openModal" data-modal="videoModal9">View</button>
+            <div id="videoModal9" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="videoModal9">&times;</span>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/srd5SObb3cw" frameborder="0" allowfullscreen></iframe>
+        </div>
+</div>
+            <whatsapp-btn onclick="shareOnWhatsApp('https://www.youtube.com/watch?v=srd5SObb3cw')"class="whatsapp-btn" id="WhatsApp:SD-Beginner"><img  src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></button>
+          </div>
+          <div class="tab__content-box">
+            <span class="tag tag-intermediate">Intermediate</span>
+            <h4>HLD concepts</h4>
+            <p>Introduction to High-Level Design concepts through scaling a product</p><br>
+                                    <button class="openModal" data-modal="videoModal10">View</button>
+            <div id="videoModal10" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="videoModal10">&times;</span>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/MfJkL-ZDyOI" frameborder="0" allowfullscreen></iframe>
+        </div>
+</div>
+            <whatsapp-btn onclick="shareOnWhatsApp('https://www.youtube.com/watch?v=MfJkL-ZDyOI')"class="whatsapp-btn" id="WhatsApp:SD-Intermediate"><img  src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></button>
+          </div>
+        </div>
+        <!-- Foundation -->
+        <div class="tab__content-item is--active" id="content-foundation">
+          <div class="tab__content-box">
+             <span class="tag tag-beginner">Beginner</span>
+            <h4>Programming Basics in JS</h4>
+            <p>Learn to implement Operators, If Else and Functions in Javascript</p><br>
+            <button class="openModal" data-modal="videoModal11">View</button>
+            <div id="videoModal11" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="videoModal11">&times;</span>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/6Te3A-bLAv4" frameborder="0" allowfullscreen></iframe>
+        </div>
+</div>
+            <whatsapp-btn onclick="shareOnWhatsApp('https://www.youtube.com/watch?v=6Te3A-bLAv4')"class="whatsapp-btn" id="WhatsApp:Foundation-Beginner"><img  src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></button>
+          </div>
+          <div class="tab__content-box">
+            <span class="tag tag-intermediate">Intermediate</span>
+            <h4>Advanced Array functions in JS</h4>
+            <p>Learn to implement Array callback functions, Map, Filter & Reduce and Splice & Slice</p><br>
+            <button class="openModal" data-modal="videoModal12">View</button>
+            <div id="videoModal12" class="modal">
+        <div class="modal-content">
+            <span class="close" data-modal="videoModal12">&times;</span>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/fp7Ue080rko" frameborder="0" allowfullscreen></iframe>
+        </div>
+</div>
+            <whatsapp-btn onclick="shareOnWhatsApp('https://www.youtube.com/watch?v=fp7Ue080rko')"class="whatsapp-btn" id="WhatsApp:Foundation-Intermediate"><img  src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></button>
+          </div>
+        </div>
+<!-- FSD PLUS -->
+       <div class="tab__content-item is--active" id="content-FSD-PLUS">
+  <div class="tab__content-box">
+      <div class="content-item-fsd">
+      <a href="https://www.crio.do/magic/fsd-plus-program-overview" class="walkthrough">Program Overview&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+      <button class="openModal view-button" data-modal="videoModal13">View</button>
+      <whatsapp-btn onclick="shareOnWhatsApp('https://www.crio.do/magic/fsd-plus-program-overview')" class="whatsapp-btn" id="WhatsApp:FSD-PLUS-Program Overview">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+      </whatsapp-btn>
+    </div>
+    <div id="videoModal13" class="modal">
+  <div class="modal-content">
+    <span class="close" data-modal="videoModal13">&times;</span>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/rj0rBBNoUDI?si=vPbajEL2Q3z3rUxb" frameborder="0" allowfullscreen></iframe>
+  </div>
+    </div>
+    <!-- Modal content for Program Overview -->
+    <!-- Modal Trigger Button and Info -->
+<div class="content-item-fsd">
+  <a href="https://www.crio.do/magic/fsd-plus-how-will-you-learn-hld" class="walkthrough">
+    Walkthrough &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </a>
+  <button class="openModal view-button" data-modal="videoModal14">View</button>
+  <whatsapp-btn onclick="shareOnWhatsApp('https://www.crio.do/magic/fsd-plus-how-will-you-learn-hld')" class="whatsapp-btn" id="WhatsApp:FSD-PLUS-Walkthrough">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+  </whatsapp-btn>
+</div>
+
+<!-- Modal Content for Program Overview -->
+<div id="videoModal14" class="modal">
+  <div class="modal-content">
+    <span class="close" data-modal="videoModal14">&times;</span>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/a6NTjJhGKTc?si=PtMy4e5Gmeo207j-" frameborder="0" allowfullscreen></iframe>
+  </div>
+</div>
+<!-- Modal Trigger Button and Info -->
+<div class="content-item-fsd">
+  <a href="https://www.crio.do/magic/dependency-inversion-principle" class="walkthrough">
+   Dependency Inversion
+  </a>
+  <button class="openModal view-button" data-modal="videoModal15">View</button>
+  <whatsapp-btn onclick="shareOnWhatsApp('https://www.crio.do/magic/dependency-inversion-principle')" class="whatsapp-btn" id="WhatsApp:FSD-PLUS-Dependency-Inversion">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+  </whatsapp-btn>
+</div>
+
+<!-- Modal Content for Program Overview -->
+<div id="videoModal15" class="modal">
+  <div class="modal-content">
+    <span class="close" data-modal="videoModal15">&times;</span>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/DVGo6dCfUXM?si=A1TvzamfTVVem1UA" frameborder="0" allowfullscreen></iframe>
+  </div>
+</div>
+    <div class="content-item-fsd">
+  <a href="https://www.crio.do/magic/design-critique" class="walkthrough">
+    Design Critique&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </a>
+  <button class="openModal view-button" data-modal="videoModal16">View</button>
+  <whatsapp-btn onclick="shareOnWhatsApp('https://www.crio.do/magic/design-critique')" class="whatsapp-btn" id="WhatsApp:FSD-PLUS-Design-Critique">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+  </whatsapp-btn>
+</div>
+
+<!-- Modal Content for Program Overview -->
+<div id="videoModal16" class="modal">
+  <div class="modal-content">
+    <span class="close" data-modal="videoModal16">&times;</span>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/EdJxTOGS7Dw?si=9yBZ1ue68OudbRHy" frameborder="0" allowfullscreen></iframe>
+  </div>
+</div>
+<!-- Modal Trigger Button and Info -->
+
+
+   
+  </div>
+          <div class="tab__content-box">
+            
+            <div class="content-item-fsd">
+  <a href="https://www.crio.do/magic/open-close-principle" class="walkthrough">
+    Open Close Principle
+  </a>
+  <button class="openModal view-button" data-modal="videoModal17">View</button>
+  <whatsapp-btn onclick="shareOnWhatsApp('https://www.crio.do/magic/open-close-principle')" class="whatsapp-btn" id="WhatsApp:FSD-PLUS-Open-Close-Principle">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+  </whatsapp-btn>
+</div>
+
+<!-- Modal Content for Program Overview -->
+<div id="videoModal17" class="modal">
+  <div class="modal-content">
+    <span class="close" data-modal="videoModal17">&times;</span>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/TLM4oRwVlAA?si=UbsC3rQBqX3SazxY" frameborder="0" allowfullscreen></iframe>
+  </div>
+</div>
+            <div class="content-item-fsd">
+  <a href="https://www.crio.do/magic/single-responsibility-principle" class="walkthrough">
+    Single Responsibility
+  </a>
+  <button class="openModal view-button" data-modal="videoModal18">View</button>
+  <whatsapp-btn onclick="shareOnWhatsApp('https://www.crio.do/magic/single-responsibility-principle')" class="whatsapp-btn" id="WhatsApp:FSD-PLUS-Single-Responsibility">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+  </whatsapp-btn>
+</div>
+
+<!-- Modal Content for Program Overview -->
+<div id="videoModal18" class="modal">
+  <div class="modal-content">
+    <span class="close" data-modal="videoModal18">&times;</span>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/7ebACjHAf_Y?si=ie9KgIDpyoypKHZW" frameborder="0" allowfullscreen></iframe>
+  </div>
+</div>
+            <div class="content-item-fsd">
+  <a href="https://www.crio.do/magic/fsd-plus-distributed-tracing" class="walkthrough">
+    Distributed Tracing&nbsp;&nbsp;&nbsp;
+  </a>
+  <button class="openModal view-button" data-modal="videoModal19">View</button>
+  <whatsapp-btn onclick="shareOnWhatsApp('https://www.crio.do/magic/fsd-plus-distributed-tracing')" class="whatsapp-btn" id="WhatsApp:FSD-PLUS-Distributed-Tracing">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+  </whatsapp-btn>
+</div>
+
+<!-- Modal Content for Program Overview -->
+<div id="videoModal19" class="modal">
+  <div class="modal-content">
+    <span class="close" data-modal="videoModal19">&times;</span>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/a6NTjJhGKTc?si=SfFtg0l62GuxSOgr" frameborder="0" allowfullscreen></iframe>
+  </div>
+</div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Function to open a modal
+  function openModal(modalID) {
+    const allModals = document.querySelectorAll('.modal');
+    // Close all modals before opening the new one
+    allModals.forEach(modal => modal.style.display = 'none');
+    const modal = document.getElementById(modalID);
+    if (modal) {
+      modal.style.display = 'block';
+    }
+  }
+
+  // Function to close a modal
+  function closeModal(modalID) {
+    const modal = document.getElementById(modalID);
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  }
+
+  // Function to send data to Google Apps Script for click tracking
+  function sendClickDataToGAS(buttonId) {
+    var gasUrl = 'https://script.google.com/macros/s/AKfycbxp5FecxegZIgDJvkq7LRJrk-4BC0t7_l36TlGoTKPHV8iPuR24MLC0XCb_X7fhuX8W/exec'; // Replace with your actual web app URL
+    var queryString = `?action=click&programName=${encodeURIComponent(buttonId)}&buttonId=`;
+    fetch(gasUrl + queryString)
+      .then(response => response.text())
+      .then(result => console.log('GAS response:', result))
+      .catch(error => console.error('Error:', error));
+  }
+
+  // Adding click event listeners to WhatsApp buttons for tracking
+  document.querySelectorAll('.whatsapp-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      sendClickDataToGAS(this.id); // The button's ID represents the programName
+    });
+  });
+
+  // Tab functionality
+  const tabs = document.querySelectorAll(".tab__item");
+  const tabContents = document.querySelectorAll(".tab__content-item");
+
+  function activateTab(tabIndex) {
+    tabs.forEach((tab, index) => {
+      tab.classList.toggle("is--active", index === tabIndex);
+      tabContents[index].classList.toggle("is--active", index === tabIndex);
+    });
+  }
+
+  // Initially open the DSA tab and its modal
+  activateTab(0);
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => activateTab(index));
+  });
+
+  // Modal open buttons
+  document.querySelectorAll('.openModal').forEach(button => {
+    button.addEventListener('click', function() {
+      openModal(this.dataset.modal);
+    });
+  });
+
+  // Modal close buttons
+  document.querySelectorAll('.modal .close').forEach(button => {
+    button.addEventListener('click', function() {
+      closeModal(this.dataset.modal);
+    });
+  });
+
+  // Close modals with the Escape key
+  window.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      document.querySelectorAll('.modal').forEach(modal => modal.style.display = 'none');
+    }
+  });
+
+  // Validate phone number input
+  function validateNumberInput(event) {
+    const value = event.target.value.replace(/[^\d]/g, '').slice(0, 10);
+    event.target.value = value;
+  }
+  document.getElementById('learnerNumber').addEventListener('input', validateNumberInput);
+
+  // Share on WhatsApp function
+  window.shareOnWhatsApp = function(link) {
+    let nameField = document.getElementById("learnerName");
+    let numberField = document.getElementById("learnerNumber");
+    let name = nameField.value.trim();
+    let number = numberField.value.trim();
+
+    // Validate inputs
+    if (!name || !number || number.length !== 10 || isNaN(number)) {
+      if (!name) nameField.classList.add('error');
+      if (!number || number.length !== 10 || isNaN(number)) numberField.classList.add('error');
+      return; // Stop the function if validation fails
+    }
+
+    // Remove error class if input is valid
+    nameField.classList.remove('error');
+    numberField.classList.remove('error');
+
+    let message = `Hey ${name}, I want to give you a sneak peek into what you'll be learning after you join our program.
+I have sent you an exclusive sample video link that covers some important topics. Feel free to watch it. Here is the link: ${link}`;
+    let whatsappUrl = `https://web.whatsapp.com/send?phone=${number}&text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank");
+  };
+
+  // Function to open videos in a new tab
+  window.openVideo = function(link) {
+    window.open(link, "_blank");
+  };
+});
+
+</script>
+</body>
+</html>
