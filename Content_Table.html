@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link href='https://fonts.googleapis.com/css?family=Rubik' rel='stylesheet'>
+    <style>
+         body {
+    background-color:none;
+    margin: 0;
+    padding: 0;
+    font-family: Rubik, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vertically center content */
+    height: 100vh; /* Full viewport height */
+  }
+
+        #options,#filterContainer {
+            position: absolute; /* Positioned absolutely to allow for initial centering */
+    top: 25%; /* Move buttons higher up */
+    width: 100%; /* Ensure full width */
+    transform: translateY(0); /* No need to adjust for initial centering */
+    transition: top 0.3s ease-in-out, transform 0.3s ease-in-out; /* Smooth transition for moving the buttons */
+    text-align:center;
+        }
+
+        #options button {
+            background-image:#02BF91
+            color: #004246;
+            border: none;
+            padding: 10px 20px;
+            font-size:15px;
+            font-weight:bold;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #options button:hover {
+            background-color: none;
+            color:#;
+            transform: scale(1.05);
+        }
+
+        #options button.active {
+    background-color: #2DF8C5; /* Change this color to your preference */
+    color: #003B3F; /* Change text color if needed */
+}
+#filterContainer {
+    margin-top: 20px; /* Add margin to create space between buttons and filter */
+    text-align: center;
+}
+
+#tagFilter{
+        padding: 10px 20px;
+        font-size: 14px;
+        border-radius: 5px;
+        border: 2px solid none; /* Match the button color */
+        background-color: white;
+        cursor: pointer;
+        outline: none; /* Remove focus outline */
+        transition: all 0.3s ease;
+        font-family: Rubik, sans-serif; /* Ensure Rubik font is applied */
+        margin-top: 20px;
+        
+        }
+#tagFilter:hover {
+    background-color: #f0f0f0; /* Light grey for hover */
+    border-color: #02BF91; /* Brighter green on hover */
+}
+ 
+#tagFilter option:selected {
+    background-color: #cce8e4; /* A lighter shade for selected option */
+}
+
+#resetFilter {
+    display: inline-block; /* Ensure it's treated as an inline-level block container */
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: bold; /* Make text bold */
+    border-radius: 5px;
+    border: 2px solid none;  
+  background-color: #fff;
+    color: black;
+    cursor: pointer;
+    font-family: 'Rubik', sans-serif;
+    margin-left: 10px; /* Space between filter and reset button */
+    text-shadow: none; /* Remove any text shadow if present */
+    box-shadow: none; /* Remove any box shadow if present */
+    transition: background-color 0.3s;
+}
+
+#resetFilter:hover {
+    background-color: none; /* Darker shade for hover effect */
+    /* Removed the transform scale to prevent shaky feel */
+}
+
+
+
+        #tableContainer {
+            margin-top: 5px;
+            padding-left: 0px; /* Add 10px padding on the left */
+            padding-right: 8px;
+            background-color: white;
+            border-radius: 10px;
+            max-height:400px;
+            overflow: auto;
+        }
+      #tableContainer::-webkit-scrollbar {
+        width: 10px;
+    }
+    #tableContainer::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+    #tableContainer::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+    #tableContainer::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+        table {
+            width: 100%;
+    margin-bottom: 0;
+    font-size: 12px;
+    border-collapse: separate; /* Use separate border collapsing */
+    border-spacing: 0; /* Remove spacing between cells */
+    border-radius: 10px; 
+        }
+
+        th, td {
+    border: 1px solid #ddd;
+    padding: 10px 15px;
+    text-align: left;
+    border-radius: 10px; /* Rounded corners */
+}
+
+        th {
+            background-image: linear-gradient(to right,#009378, #004246);
+            color: white;
+            font-weight:normal;
+            border-radius: 10px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+            border-radius: 10px;
+      }
+      tr:last-child .tooltip {
+    top: auto; /* Align top edge of tooltip with the bottom edge of the cell */
+    bottom: 100%; /* Move tooltip above the cell */
+    transform: translateX(-50%) translateY(0); /* Adjust the transformation */
+}
+
+        td img {
+            width: 130px;
+            height: auto;
+            cursor: pointer;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+        }
+
+        .modal-content {
+            margin: 10% auto;
+            display: block;
+            width: 35%;
+            max-width: 700px;
+            border-radius:10px;
+        }
+      .modal-content:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .hover-container {
+          position: relative;
+          cursor: pointer;
+        }
+
+        .tooltip {
+          display: none;
+          position: absolute;
+          background-color: black;
+          color: white;
+          padding: 5px;
+          border-radius: 5px;
+          font-size: 14px;
+          z-index: 1;
+        }
+
+        .hover-container:hover .tooltip {
+          display: block;
+        }
+
+        .copy-content:hover .tooltip {
+          display: block;
+        }
+
+        .copy-content .tooltip, .hover-container .tooltip {
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          white-space: nowrap;
+        }
+      
+      .copy-content {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .copy-content:hover {
+            background-color: #f0f0f0; /* Hover effect */
+        }
+
+        .copy-content .tooltip {
+            display: none;
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: black;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .copy-content:hover .tooltip {
+            display: block;
+        }
+      .modal-download-button {
+    display: none; /* Initially hidden, shown when the modal is open */
+    position: absolute;
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for exact center alignment */
+    /* Position below the image, adjust the value as needed */
+    margin-top:-8%;
+    padding: 10px 20px;
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    border-radius: 5px; /* Rounded corners */
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer; /* Cursor changes to a hand symbol when hovered over */
+    border: 2px solid transparent; /* Transparent border */
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+}
+
+    .modal-download-button:hover {
+        background-color: white; /* White background on hover */
+        color: #4CAF50; /* Green text on hover */
+        border-color: #4CAF50; /* Green border on hover */
+
+
+
+    </style>
+</head>
+<body>
+<div id="options">
+    <button id="FSD">Fellowship Program in Software Development</button>
+    <button id="QA">Fellowship Program in QA Automation</button>
+<br> <div id="filterContainer">
+    <select id="tagFilter">
+        <option value="all">All Tags</option>
+        <!-- Options will be dynamically filled based on data -->
+    </select>
+    <button id="resetFilter">Reset</button>
+  </div></div>
+
+    <div id="tableContainer"></div>
+
+    <div id="imageModal" class="modal">
+        <span id="closeModal" class="close" onclick="closeModal()">&times;</span>
+        <a id="downloadLink" download><img class="modal-content" id="modalImage"></a>
+      <span class="modal-download-button" onclick="downloadImage()">Download</span>
+    </div>
+
+    <script>
+    let currentOption = "FSD";
+document.addEventListener('DOMContentLoaded', function() {
+    populateTagOptions(); // Populate tag options once on load
+    generateTable(currentOption);
+    setActiveButton(document.getElementById(currentOption));
+});
+
+function setActiveButton(button) {
+    document.querySelectorAll('#options button').forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+}
+      
+function populateTagOptions() {
+    let allTags = ["Engagement/DNP", "Post Nurture Engagement", "Pre Nurture Engagement", "Educative", "User Asked"]; // Example tags
+    allTags.forEach(tag => {
+        let option = document.createElement('option');
+        option.value = tag;
+        option.innerText = tag;
+        document.getElementById('tagFilter').appendChild(option);
+    });
+}
+
+document.getElementById('FSD').addEventListener('click', function() {
+    currentOption = "FSD";
+    generateTable(currentOption);
+    setActiveButton(this);
+});
+
+document.getElementById('QA').addEventListener('click', function() {
+    currentOption = "QA";
+    generateTable(currentOption);
+    setActiveButton(this);
+});
+
+function trackButtonClick(buttonId) {
+    const dateTime = new Date().toISOString();
+    sendDataToGoogleSheet(buttonId, dateTime);
+}
+
+ document.getElementById('tagFilter').addEventListener('change', function() {
+            // Filter the table based on the selected tag
+            generateTable(currentOption, this.value);
+        });
+
+        document.getElementById('FSD').addEventListener('click', function() {
+    currentOption = "FSD";
+    generateTable(currentOption);
+});
+
+document.getElementById('QA').addEventListener('click', function() {
+    currentOption = "QA";
+    generateTable(currentOption);
+});
+
+document.getElementById('resetFilter').addEventListener('click', function() {
+    document.getElementById('tagFilter').value = 'all'; // Reset filter to 'All Tags'
+    generateTable(currentOption, 'all'); // Regenerate table with all data
+});
+
+
+function generateTable(option, tagFilter = "all") {
+    document.getElementById('options').style.top = '5%';
+    document.getElementById('options').style.transform = 'translateY(0)';
+
+    let data = getDataForOption(option);
+            if (tagFilter !== "all") {
+                data = data.filter(item => item.tags.includes(tagFilter));
+            }
+
+    let table = document.getElementById('dynamicTable');
+    if (!table) {
+        table = document.createElement('table');
+        table.id = 'dynamicTable';
+        document.getElementById('tableContainer').appendChild(table);
+    }
+
+    table.innerHTML = `<thead><tr><th><center>Creative Assets</center></th><th><center>Message</center></th><th><center>Use Case</center></th></tr></thead><tbody></tbody>`;
+
+    let tbody = table.querySelector('tbody');
+
+    data.forEach((row, index) => {
+        let tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td class="hover-container">
+                <img src="${row.image}" alt="${row.imageName}" onclick="showModal('${row.image}', '${row.imageName}')"/>
+                <span class="tooltip">Click to view</span>
+            </td>
+            <td class="copy-content">
+                <span class="content-text" data-content-name="${row.contentName}">${row.content}</span>
+                <span class="tooltip">Click to copy</span>
+            </td>
+            <td>${row.tags.join(', ')}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+
+    attachCopyListeners();
+}
+        function getDataForOption(option) {
+            if (option === "FSD") {
+                return [
+                  { imageName: "Sprint_Week", image: "https://www.dropbox.com/scl/fi/p2pck7963p3txco2zqbll/Sprint-Week-Crio-min.png?rlkey=qkha1ahdhdepvenfcoasdp5ag&raw=1", contentName: "Sprint_Week", content: "Hey {Name},<br></br>Here's the schedule for the sprint week at Crio.", tags: ["Pre Nurture Engagement","Post Nurture Engagement","Post Qualification Engagement"] },
+
+                    { imageName: "MERN_Stack", image: "https://www.dropbox.com/scl/fi/6161s9o1o46ex6whi0s29/MERN-1-min.png?rlkey=5lsyzy3l86vhmebnyshpix10r&dl=1", contentName: "MERN_Stack", content: "Hey {Name},<br>Hope all is well with you! Reflecting on our last conversation about the MERN Stack, I wanted to delve a bit deeper and share how we at Crio enhance your understanding and skills in this area.<br>Consider this an opportunity to explore how Crio's unique approach to the MERN Stack can significantly boost your learning curve. Our focus is on practical, real-world applications, ensuring you not only grasp the theory but also gain hands-on experience.<br>I'm looking forward to your insights on this and how we can further tailor our support to meet your learning objectives.", tags: ["Engagement/DNP", "Post Nurture Engagement","Pre Nurture Engagement"] },
+                    { imageName: "MERN_Stack_Educative", image: "https://www.dropbox.com/scl/fi/s4c7ush7sq5gabd9lcsfl/MERN-2-min.png?rlkey=s4xz6u21dqdv7oh4s1w085sj9&dl=1", contentName: "MERN_Stack_Educative", content: "Hey {Name},<br></br>Hope you're doing well! Building on our last conversation about the MERN Stack, I've attached an informative image that illustrates both the core components of MERN and the unique way we teach it at Crio. <br></br>This visual guide is designed to deepen your understanding and highlight why MERN is essential for modern web development, especially in product-based companies.<br></br>I encourage you to take a moment to review this illustration. I'd really appreciate your thoughts on it.", tags: ["Engagement/DNP", "Post Nurture Engagement","Educative","Post Qualification Engagement"] },
+                    { imageName: "DSA", image: "https://www.dropbox.com/scl/fi/629k04b5g6l5b78b7vj79/DSA-1-min.png?rlkey=ueohncdmgauesi3x8cg3xgdl4&dl=1", contentName: "DSA", content: "Hey {Name},<br></br>Hope you're doing well! Building on our recent discussion about Data Structures and Algorithms (DSA), I'm eager to share more about this critical topic and how Crio can enhance your skills in this area.<br></br>Take a moment to understand the unique ways Crio supports your journey in mastering DSA. Our program is designed to not just teach you the theory but to immerse you in practical, real-world problem-solving that's vital for tech professionals.<br></br>Let's connect to discuss how our problem solving methodology can help you with your DSA Skills.", tags: ["Engagement/DNP", "Post Nurture Engagement","Post Qualification Engagement"] },
+                  { imageName: "DSA_Educative", image: "https://www.dropbox.com/scl/fi/n4zbwmd506lzwxez8ywbb/DSA-2-min.png?rlkey=r8r3wl9wgdo20uk5jbvqs2frv&dl=1", contentName: "DSA_Educative", content: "Hey {Name},<br></br>Building on our recent discussion about Data Structures and Algorithms (DSA), I've attached an informative visual. This guide succinctly highlights the fundamental aspects of DSA and showcases Crio's unique teaching methodology.<br></br>It's designed to provide a clear understanding of DSA's importance in tech and its practical application in real-world scenarios.<br></br> Looking forward to hearing your thoughts!<br></br>", tags: ["User Asked","Post Nurture Engagement","Post Qualification Engagement"] },
+                  { imageName: "THA", image: "https://www.dropbox.com/scl/fi/hp7o2aqdcu3sd1vdmccf1/THA-1-min.png?rlkey=lxgpomhzmuilq3vffox25eb1t&dl=1", contentName: "THA", content: "Hello {Name},<br></br>In today's rapid hiring environment, companies seek candidates whose skills align closely with their business needs. To evaluate this, they often use Take-Home Assessments as a critical part of their interview process.<br></br>I invite you to explore how Crio can effectively prepare you to excel in these Take-Home Assessments. Our approach is designed to equip you with the practical skills and confidence needed to tackle these challenges successfully and stand out in the hiring process.<br></br>Looking forward to your thoughts on how we can assist you in this crucial step of your career journey.", tags: ["Engagement/DNP","Post Nurture Engagement","Post Qualification Engagement"] },
+                  { imageName: "JAVA", image: "https://www.dropbox.com/scl/fi/cbhggmcd4q9g5t7e78tja/JAVA-min.png?rlkey=ed3pb0e9c11yhmd926vsw70sb&dl=1", contentName: "JAVA", content: "Hey {Name},<br></br>Building on our last discussion, I'd like to share some insights on Java and how we at Crio can significantly enhance your backend specialization skills.<br></br>Take a moment to explore how Crio's focused approach to Java, a cornerstone in backend development, can elevate your proficiency. Our method is not just about learning Java syntax and concepts; it's about applying them in real-world scenarios, ensuring you're well-equipped for the challenges in backend development.<br></br>I'm eager to hear your thoughts on this approach and how we can assist you in achieving your specific backend development goals.", tags: ["Engagement/DNP","Post Nurture Engagement","Post Qualification Engagement"] },
+                   { imageName: "Hiring_Partners", image: "https://www.dropbox.com/scl/fi/5ch1sg8brela2n6fcn05g/Asset-2-Updated-1-min.png?rlkey=4akte1osk7wi3eytl4swflgho&raw=1", contentName: "Hiring_Partners", content: "Hey {Name},<br></br>I'm excited to share some compelling statistics with you. <br></br>Crio grads have been hired by 1000+ companies, showcasing the diversity and reach of our network. <br>Our average placement percentage remains strong at 81%. <br>As you explore opportunities with us, remember that you too can achieve these impressive outcomes. <br>The average compensation for our dream job is 10 LPA, and for our super dream job, it's 21 LPA. <br></br>Feel free to reach out if you have any questions or need further details.", tags: ["Engagement/DNP","Pre Nurture Engagement","Post Nurture Engagement","Post Qualification Engagement"] },
+                  
+                  { imageName: "THA-Educative", image: "https://www.dropbox.com/scl/fi/yk4v8ayl7667tuwpfsic2/THA-2-min.png?rlkey=c5ojx252k1ow7wb0y9wz3uujx&dl=1", contentName:"THA-Educative",content:"Hello {Name},<br></br>In the rapidly evolving job market, companies increasingly rely on Take-Home Assessments to gauge if candidates' skills align with their business objectives. These assessments are a crucial part of the interview process, testing not just technical knowledge but also problem-solving and practical application.<br></br>At Crio, we recognize the importance of being well-prepared for these challenges. Our curriculum is specifically designed to mirror real-world scenarios, providing you with the hands-on experience and critical thinking skills necessary to excel in Take-Home Assessments. By training with us, you'll gain not just theoretical knowledge, but also the practical expertise that companies are looking for.<br></br>I'm keen to discuss how Crio can enhance your readiness for these assessments and support your career growth.", tags: ["User Asked","Educative"] },
+                  
+                   { imageName: "JAVA_Springboot", image: "https://www.dropbox.com/scl/fi/7lnul8986beu7icchfmfs/Springboot-min.png?rlkey=7wrsmaz96inyo6y28t5q3pwfn&dl=1", contentName:"JAVA_Springboot", content:  "Hey {Name},<br></br>I wanted to touch base following our recent conversation and delve into Java and the Spring Boot framework, highlighting how Crio's program can enhance your skills in these areas.<br></br>Understanding Java and Spring Boot is crucial for robust backend development. At Crio, we offer an immersive learning experience that goes beyond just the basics of Java. We dive deep into the Spring Boot framework, showing you how to build efficient, scalable backend systems.<br></br>I'm keen to hear your thoughts on how this aligns with your learning journey and any specific aspects of Java or Spring Boot you're curious about.", tags: ["User Asked","Educative"] },
+                  
+                  { imageName: "Hiring_Partners_2", image: "https://www.dropbox.com/scl/fi/4vzo84wuog8p2sfre1o0z/Asset-12-Updated-min-2.png?rlkey=tef787b51q57zf58bswm4rlwh&raw=1", contentName: "Hiring_Partners_2", content: "Hey {Name},<br></br>I'm excited to share some compelling statistics with you. <br></br>Crio grads have been hired by 1000+ companies, showcasing the diversity and reach of our network. <br>Our average placement percentage remains strong at 81%. <br>As you explore opportunities with us, remember that you too can achieve these impressive outcomes. <br>The average compensation for our dream job is 10 LPA, and for our super dream job, it's 21 LPA. <br></br>Feel free to reach out if you have any questions or need further details.", tags: ["Post Nurture Engagement","Post Qualification Engagement"] },
+                  
+                  { imageName:"Placement_Stats", image: "https://www.dropbox.com/scl/fi/789m99v1pn6ywmjbdy9ep/Career-Breakthroughs-with-CTC-increase.png?rlkey=iu7lkwi6fzysg0o2z6qcvyyic&raw=1", contentName: "Placement_Stats", content: "Hey {Name},<br></br>I'm excited to share some compelling statistics with you.<br>Crio grads have been hired by 1000+ companies, showcasing the diversity and reach of our network.<br>Our average placement percentage remains strong at 81%. <br>As you explore opportunities with us, remember that you too can achieve these impressive outcomes. <br>The average compensation for our dream job is 10 LPA, and for our super dream job, it's 21 LPA. <br>Feel free to reach out if you have any questions or need further details.", tags:["Post Nurture Engagement","Post Qualification Engagement"] },
+                  { imageName:"MAANG_Companies", image: "https://www.dropbox.com/scl/fi/858s4gkgst0mddkeo2awm/MAANG-min.png?rlkey=vsd675kvisr0n3ownzgm2s7cz&raw=1", contentName: "MAANG_Companies", content: "Hey {Name},<br></br>I'm excited to share information about MAANG Companies with you.<br>Check this out to learn what MAANG is and which companies fall under its umbrella. <br>Also, discover how Crio can help you secure opportunities with these companies.", tags:["User Asked","Educative","Post Nurture Engagement","Post Qualification Engagement"]  },
+                  { imageName:"Work-like-projects-FSD", image: "https://www.dropbox.com/scl/fi/9y7ktpwj4lv0pdvh02xbi/Work-like-projects-FSD-min.png?rlkey=icp1in98w1b6y9zqyc1vlzu1y&raw=1", contentName: "Work-like-projects-FSD", content: "Hey {Name},<br></br>Get ready to dive into work-like projects during your Software Development learning journey. <br>I'm thrilled to share project details that will enhance your software development skills.", tags:["Engagement/ DNP","Pre Nurture Engagement","Post Nurture Engagement"]  },
+                  { imageName:"Work-like-projects-BACKEND", image: "https://www.dropbox.com/scl/fi/ra599eaz1m9dsgcdkguao/Work-like-project-Back-end-min.png?rlkey=91s99uq9fhmq4y1q41qm5c5la&raw=1", contentName: "Work-like-projects-BACKEND", content: "Hey {Name},<br></br>Get ready to dive into work-like projects during your Backend Development learning journey.<br>I'm thrilled to share project details that will enhance your Backend development skills.", tags:["Engagement/ DNP","Pre Nurture Engagement","Post Nurture Engagement"]  },
+                  
+                  { imageName:"Why Crio?", image: "https://www.dropbox.com/scl/fi/5giqo5nle561c583w7cej/Why-Crio_-min.png?rlkey=m9eule59b7fjcngcd4oyahgar&raw=1", contentName: "Why Crio?", content: "Hey {Name},<br></br>Discover why Crio is the choice for you!Explore its features and find out how it stands out in empowering your learning journey.", tags:["Engagement/ DNP","Pre Nurture Engagement","Post Nurture Engagement"]  },
+                  // Add more data items with custom names
+                ];
+            } else if (option === "QA") {
+                return [
+                  
+                   { imageName: "Sprint_Week", image: "https://www.dropbox.com/scl/fi/p2pck7963p3txco2zqbll/Sprint-Week-Crio-min.png?rlkey=qkha1ahdhdepvenfcoasdp5ag&dl=1", contentName: "Sprint_Week", content: "Hey {Name},<br></br>Here's the schedule for the sprint week at Crio.", tags: ["Pre Nurture Engagement","Post Nurture Engagement","Post Qualification Engagement"] },
+                  
+                    { imageName: "DSA", image: "https://www.dropbox.com/scl/fi/629k04b5g6l5b78b7vj79/DSA-1-min.png?rlkey=ueohncdmgauesi3x8cg3xgdl4&dl=1", contentName: "DSA", content: "Hey {Name},<br></br>Hope you're doing well! Building on our recent discussion about Data Structures and Algorithms (DSA), I'm eager to share more about this critical topic and how Crio can enhance your skills in this area.<br></br>Take a moment to understand the unique ways Crio supports your journey in mastering DSA. Our program is designed to not just teach you the theory but to immerse you in practical, real-world problem-solving that's vital for tech professionals.<br></br>Let's connect to discuss how our problem solving methodology can help you with your DSA Skills.", tags: ["Engagement/DNP", "Post Nurture Engagement","Post Qualification Engagement"] },
+                  { imageName: "DSA_Educative", image: "https://www.dropbox.com/scl/fi/n4zbwmd506lzwxez8ywbb/DSA-2-min.png?rlkey=r8r3wl9wgdo20uk5jbvqs2frv&dl=1", contentName: "DSA_Educative", content: "Hey {Name},<br></br>Building on our recent discussion about Data Structures and Algorithms (DSA), I've attached an informative visual. This guide succinctly highlights the fundamental aspects of DSA and showcases Crio's unique teaching methodology.<br></br>It's designed to provide a clear understanding of DSA's importance in tech and its practical application in real-world scenarios.<br></br> Looking forward to hearing your thoughts!<br></br>", tags: ["User Asked","Post Nurture Engagement","Post Qualification Engagement"] },
+                  { imageName: "THA", image: "https://www.dropbox.com/scl/fi/hp7o2aqdcu3sd1vdmccf1/THA-1-min.png?rlkey=lxgpomhzmuilq3vffox25eb1t&dl=1", contentName: "THA", content: "Hello {Name},<br></br>In today's rapid hiring environment, companies seek candidates whose skills align closely with their business needs. To evaluate this, they often use Take-Home Assessments as a critical part of their interview process.<br></br>I invite you to explore how Crio can effectively prepare you to excel in these Take-Home Assessments. Our approach is designed to equip you with the practical skills and confidence needed to tackle these challenges successfully and stand out in the hiring process.<br></br>Looking forward to your thoughts on how we can assist you in this crucial step of your career journey.", tags: ["Engagement/DNP","Post Nurture Engagement","Post Qualification Engagement"] },
+                  
+                  { imageName: "QA_Automation", image: "https://www.dropbox.com/scl/fi/eqasmw3qelh01mkiexhr2/QA-Automation-min.png?rlkey=48uatnyjswaxdntllgva1aenk&dl=1", contentName: "QA_Automation", content: "Hey {Name},<br></br>Embark on a journey towards becoming an Automation Test Engineer/SDET with Crio.Do's Fellowship Program in QA Automation! <br></br>Gain hands-on experience with the most sought-after automation testing skills and advanced SDET roles. <br></br>Dive into a project-based learning platform that mirrors real-world developer environments. <br></br>If you're looking to learn on-the-job and build a robust career, let's connect! <br></br>Have questions or need more info? Feel free to reach out anytime.<br></br>#QAautomation #SDETCareer #ProjectBasedLearning", tags: ["Engagement/DNP","Educative","Pre Nurture Engagement","Post Nurture Engagement"] },
+                  
+               { imageName: "Hiring_Partners", image: "https://www.dropbox.com/scl/fi/5ch1sg8brela2n6fcn05g/Asset-2-Updated-1-min.png?rlkey=4akte1osk7wi3eytl4swflgho&raw=1", contentName: "Hiring_Partners", content: "Hey {Name},<br></br>I'm excited to share some compelling statistics with you. Crio grads have been hired by 1000+ companies,showcasing the diversity and reach of our network. <br>Our average placement percentage remains strong at 81%. <br>As you explore opportunities with us, remember that you too can achieve these impressive outcomes. <br>The average compensation for our dream job is 10 LPA, and for our super dream job, it's 21 LPA. <br>Feel free to reach out if you have any questions or need further details.", tags:["Post Nurture Engagement","Post Qualification Engagement"] },
+                  
+                  { imageName: "THA-Educative", image: "https://www.dropbox.com/scl/fi/yk4v8ayl7667tuwpfsic2/THA-2-min.png?rlkey=c5ojx252k1ow7wb0y9wz3uujx&dl=1", contentName:"THA-Educative",content:"Hello {Name},<br></br>In the rapidly evolving job market, companies increasingly rely on Take-Home Assessments to gauge if candidates' skills align with their business objectives. These assessments are a crucial part of the interview process, testing not just technical knowledge but also problem-solving and practical application.<br></br>At Crio, we recognize the importance of being well-prepared for these challenges. Our curriculum is specifically designed to mirror real-world scenarios, providing you with the hands-on experience and critical thinking skills necessary to excel in Take-Home Assessments. By training with us, you'll gain not just theoretical knowledge, but also the practical expertise that companies are looking for.<br></br>I'm keen to discuss how Crio can enhance your readiness for these assessments and support your career growth.", tags: ["User Asked","Educative"] },
+                  
+                  { imageName: "Hiring_Partners_2", image: "https://www.dropbox.com/scl/fi/4vzo84wuog8p2sfre1o0z/Asset-12-Updated-min-2.png?rlkey=tef787b51q57zf58bswm4rlwh&raw=1", contentName: "Hiring_Partners_2", content: "Hey {Name},<br></br>I'm excited to share some compelling statistics with you. Crio grads have been hired by 1000+ companies,showcasing the diversity and reach of our network. <br>Our average placement percentage remains strong at 81%. <br>As you explore opportunities with us, remember that you too can achieve these impressive outcomes. <br>The average compensation for our dream job is 10 LPA, and for our super dream job, it's 21 LPA. <br>Feel free to reach out if you have any questions or need further details.", tags:["Post Nurture Engagement","Post Qualification Engagement"] },
+                  
+                  { imageName:"Placement_Stats", image: "https://www.dropbox.com/scl/fi/789m99v1pn6ywmjbdy9ep/Career-Breakthroughs-with-CTC-increase.png?rlkey=iu7lkwi6fzysg0o2z6qcvyyic&raw=1", contentName: "Placement_Stats", content: "Hey {Name},<br></br>I'm excited to share some compelling statistics with you. Crio grads have been hired by 1000+ companies,showcasing the diversity and reach of our network. <br>Our average placement percentage remains strong at 81%. <br>As you explore opportunities with us, remember that you too can achieve these impressive outcomes. <br>The average compensation for our dream job is 10 LPA, and for our super dream job, it's 21 LPA. <br>Feel free to reach out if you have any questions or need further details.", tags:["Post Nurture Engagement","Post Qualification Engagement"] },
+                  { imageName:"MAANG_Companies", image: "https://www.dropbox.com/scl/fi/858s4gkgst0mddkeo2awm/MAANG-min.png?rlkey=vsd675kvisr0n3ownzgm2s7cz&raw=1", contentName: "MAANG_Companies", content: "Hey {Name},<br></br>I'm excited to share information about MAANG Companies with you.<br>Check this out to learn what MAANG is and which companies fall under its umbrella. <br>Also, discover how Crio can help you secure opportunities with these companies.", tags:["User Asked","Educative","Post Nurture Engagement","Post Qualification Engagement"]  },
+                  
+                  { imageName:"QA_Automation_Tools", image: "https://www.dropbox.com/scl/fi/az4k2eew5aniyunucdq9t/Top-QA-Tools-min.png?rlkey=60273mbc1lb64j17t2nvotmnj&raw=1", contentName: "QA_Automation_Tools", content: "Hey {Name},<br></br>I'm thrilled to share with you the top QA automation tools and frameworks that you'll be learning at Crio.<br>Our program is designed to provide you with comprehensive knowledge and hands-on experience with QA tools and frameworks.", tags:["User Asked","Pre Nurture Engagement","Post Nurture Engagement","Post Qualification Engagement"]  },
+                  
+                  { imageName:"Why Crio?", image: "https://www.dropbox.com/scl/fi/5giqo5nle561c583w7cej/Why-Crio_-min.png?rlkey=m9eule59b7fjcngcd4oyahgar&raw=1", contentName: "Why Crio?", content: "Hey {Name},<br></br>Discover why Crio is the choice for you!Explore its features and find out how it stands out in empowering your learning journey.", tags:["Engagement/ DNP","Pre Nurture Engagement","Post Nurture Engagement"]  },
+                  
+                   { imageName:"Work-like_QA_Projects", image: "https://www.dropbox.com/scl/fi/fd2tdr4q0ccsovkg5kkz7/Work-like-project-QA-min.png?rlkey=9lzki1wuy8ay5gjpen39kxrr7&raw=1", contentName: "Work-like_QA_Projects", content: "Hey {Name},<br></br>Get ready to dive into work-like projects during your QA Automation learning journey.<br>I'm thrilled to share project details that will enhance your QA Automation skills.", tags:["Engagement/ DNP","Pre Nurture Engagement","Post Nurture Engagement"]  },
+                    // Add more data items with custom names
+                ];
+            }
+            return [];
+        }
+
+function getISTTimestamp() {
+    // get the current time
+    var now = new Date();
+
+    // convert to msec since Jan 1 1970
+    var localTime = now.getTime();
+
+    // obtain local UTC offset and convert to msec
+    var localOffset = now.getTimezoneOffset() * 60000;
+
+    // obtain UTC time in msec
+    var utc = localTime + localOffset;
+
+    // create a new Date object for a different timezone using the UTC value.
+    var offset = 5.5; // Indian Standard Time is UTC + 5.5
+    var bombay = utc + (3600000 * offset);
+
+    // convert msec value to date-string and format
+    var nd = new Date(bombay);
+    var datePart = nd.getFullYear() + '-' + 
+                   ('0' + (nd.getMonth() + 1)).slice(-2) + '-' + 
+                   ('0' + nd.getDate()).slice(-2);
+    var timePart = ('0' + nd.getHours()).slice(-2) + ':' + 
+                   ('0' + nd.getMinutes()).slice(-2) + ':' + 
+                   ('0' + nd.getSeconds()).slice(-2);
+
+    return datePart + ' / ' + timePart; // "YYYY-MM-DD / HH:MM:SS"
+}
+
+
+function showModal(imageSrc, imageName, optionId) {
+    var modal = document.getElementById("imageModal");
+    var modalImg = document.getElementById("modalImage");
+    var downloadLink = document.getElementById("downloadLink");
+    var modalDownloadButton = document.querySelector(".modal-download-button");
+
+    modal.style.display = "block";
+    modalImg.src = imageSrc;
+    modalImg.alt = imageName;
+    downloadLink.href = imageSrc;
+    downloadLink.download = imageName + ".jpg";
+    modalDownloadButton.style.display = "block";
+
+    var timestamp = getISTTimestamp();
+    var optionId = getActiveOptionId();
+    sendDataToGoogleSheet('Image', imageName, optionId, timestamp);
+}
+
+function sendDataToGoogleSheet(eventType, identifier, optionId, timestamp) {
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbyq0fsuWmksUxaMXJHnorD5hhsor_IKa2AN25gdldwtpVWygtxmC1dvjwHV7X2YbEx3yg/exec';
+    const data = {
+        eventType: eventType,
+        identifier: identifier,
+        optionId: optionId,
+        dateTime: timestamp
+    };
+
+    fetch(scriptUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => console.log('Data sent'))
+    .catch(error => console.error('Error:', error));
+}
+function closeModal() {
+    var modal = document.getElementById("imageModal");
+    modal.style.display = "none";
+}
+
+function attachCopyListeners() {
+    document.querySelectorAll(`#tableContainer .copy-content`).forEach((item) => {
+        item.addEventListener('click', function() {
+            const htmlToCopy = this.querySelector('.content-text').innerHTML;
+            const contentName = this.querySelector('.content-text').getAttribute('data-content-name');
+            const timestamp = getISTTimestamp(); // Use the IST timestamp
+            const optionId = getActiveOptionId(); // Get the active option ID
+
+            copyHtmlToClipboard(htmlToCopy, contentName, optionId, timestamp);
+            
+            const tooltip = this.querySelector('.tooltip');
+            tooltip.textContent = 'Copied!';
+            setTimeout(() => { tooltip.textContent = 'Click to copy'; }, 2000);
+        });
+    });
+}
+
+function copyHtmlToClipboard(html, contentName, optionId, timestamp) {
+    const el = document.createElement('div');
+    el.innerHTML = html;
+    el.contentEditable = 'true';
+    document.body.appendChild(el);
+
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    try {
+        document.execCommand('copy');
+        console.log('Content copied');
+        sendDataToGoogleSheet('Content', contentName, optionId, timestamp); // Assuming you want to track content copy here
+    } catch (err) {
+        console.error('Failed to copy', err);
+    } finally {
+        document.body.removeChild(el);
+    }
+}
+
+function getActiveOptionId() {
+    // This function should return the ID of the currently active option.
+    // Here's an example implementation, assuming you have an 'active' class set on the active button:
+    const activeButton = document.querySelector('#options button.active');
+    return activeButton ? activeButton.id : ''; // Return the ID or an empty string if there's no active option
+}
+
+function downloadImage() {
+    var modalImage = document.getElementById("modalImage");
+    var imageName = modalImage.alt;
+    var imageSrc = modalImage.src;
+
+    var downloadLink = document.createElement("a");
+    downloadLink.href = imageSrc;
+    downloadLink.download = imageName + ".jpg";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+
+    closeModal();
+
+}  
+
+</script>
+</body>
+</html>
