@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.slider-container {
+    overflow: hidden;
+    position: relative;
+    width: 500%;
+    height: 200px; /* Adjust as per your requirement */
+}
+
+.slides-container {
+    display: flex;
+    position: relative;
+    width: 200%; /* Twice the width to accommodate doubled slides */
+    animation: scroll 20s linear infinite; /* Adjust the duration as needed */
+}
+
+.slides-container:hover {
+    animation-play-state: paused;
+}
+
+.slide {
+    position: relative;  /* Add this line */
+    height: 330px;
+    object-fit: contain;
+    margin-right: 8px;
+    width: 50%;
+    transition: box-shadow 0.5s ease;
+}
+
+.slide:hover {
+    transform: scale(1.01);
+    box-shadow: 0px 0px 7px #ffffff;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%); /* Move the container to reveal the next set of images */
+    }
+}
+.copied-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 100;
+}
+/* Style the scrollbar track */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Style the scrollbar thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+    background: #888; /* Color of the scroll thumb */
+    border-radius: 5px; /* Rounded corners */
+}
+
+/* Style the scrollbar thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Darker shade on hover */
+}
+/* Style the scrollbar track */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Style the scrollbar thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+    background: #888; /* Color of the scroll thumb */
+    border-radius: 10px; /* Rounded corners */
+}
+
+/* Style the scrollbar thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Darker shade on hover */
+}
+
+</style>
+</head>
+<body>
+<div class="slider" onmouseover="pauseSlider()" onmouseout="startSlider()">
+    <div class="slides-container">
+        <img class="slide" src="https://www.dropbox.com/scl/fi/4xcpne6zhw8iqgsrjk7mf/Placement-Stats.png?rlkey=2z8vk3l7yrv9h7z732ooccwoc&dl=1" alt="Career Breakthroughs">
+        <img class="slide" src="https://www.dropbox.com/scl/fi/02xd5i6nj26qji966u971/Hiring-Partners-1-min.png?rlkey=raokfet7z7dt324edkapo9aaw&dl=1" alt="Hiring Partners">
+        <img class="slide" src="https://www.dropbox.com/scl/fi/abdmte5t6isttpoen14ew/Hiring-Partners-2-min.png?rlkey=9gee5y9atokoaw62wnlg1fphu&dl=1" alt="Hiring Partners 2">
+        <img class="slide" src="https://www.dropbox.com/scl/fi/629k04b5g6l5b78b7vj79/DSA-1-min.png?rlkey=ueohncdmgauesi3x8cg3xgdl4&dl=1" alt="DSA Engagement">
+        <img class="slide" src="https://www.dropbox.com/scl/fi/cbhggmcd4q9g5t7e78tja/JAVA-min.png?rlkey=ed3pb0e9c11yhmd926vsw70sb&dl=1" alt="JAVA">
+      <img class="slide" src="https://www.dropbox.com/scl/fi/6161s9o1o46ex6whi0s29/MERN-1-min.png?rlkey=5lsyzy3l86vhmebnyshpix10r&dl=1" alt="MERN">
+      <img class="slide" src="https://www.dropbox.com/scl/fi/eqasmw3qelh01mkiexhr2/QA-Automation-min.png?rlkey=48uatnyjswaxdntllgva1aenk&dl=1" alt="QA Automation">
+      <img class="slide" src="https://www.dropbox.com/scl/fi/7lnul8986beu7icchfmfs/Springboot-min.png?rlkey=7wrsmaz96inyo6y28t5q3pwfn&dl=1" alt="Spring boot">
+      <img class="slide" src="https://www.dropbox.com/scl/fi/hp7o2aqdcu3sd1vdmccf1/THA-1-min.png?rlkey=lxgpomhzmuilq3vffox25eb1t&dl=1" alt="Take Home Assessments">
+        <!-- ... additional slides as needed ... -->
+    </div>
+</div>
+ <script>
+ document.addEventListener("DOMContentLoaded", function() {
+    const container = document.querySelector('.slides-container');
+    const slides = document.querySelectorAll('.slide');
+    
+    // Clone slides and append to container for infinite scroll effect
+    slides.forEach(slide => {
+        const clone = slide.cloneNode(true);
+        container.appendChild(clone);
+    });
+
+    // Add event listener to each slide to download its image when clicked
+    container.querySelectorAll('.slide').forEach(slide => {
+        slide.addEventListener('click', function() {
+            const imgSrc = this.getAttribute('src');
+            const imgAlt = this.getAttribute('alt');
+            downloadImage(imgSrc, imgAlt);
+            showDownloadedPopup(this);
+        });
+    });
+});
+
+function downloadImage(src, alt) {
+    // Create an anchor element to trigger the download
+    var downloadLink = document.createElement("a");
+    downloadLink.href = src;
+    downloadLink.download = alt || 'download';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}
+
+
+// New function to log download
+function logDownloadToSheet(src, alt) {
+    fetch('https://script.google.com/macros/s/AKfycbzIUq3nRAhUlJT-Zb-ebY0TV4HwzkVuo297Uzy10nv5efYoVZatzXLwc-1HAAYamegz/exec', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json' // Ensure correct content type
+        },
+        body: JSON.stringify({ imageName: alt, imageSrc: src }) // Correctly formatted payload
+    });
+}
+
+
+
+function showDownloadedPopup(slide) {
+    // Remove any existing popups
+    const existingPopup = document.querySelector('.copied-popup');
+    if (existingPopup) existingPopup.remove();
+
+    // Use alt attribute as the name of the image
+    const imageName = slide.getAttribute('alt');
+
+    // Create the popup element
+    const popup = document.createElement('div');
+    popup.className = 'copied-popup';
+    popup.textContent = imageName + ' downloaded';
+
+    // Append to the main slider
+    const slider = document.querySelector('.slider');
+    slider.appendChild(popup);
+
+    // Show and then hide after a delay
+    setTimeout(() => {
+        popup.style.opacity = '1';
+        setTimeout(() => {
+            popup.style.opacity = '0';
+            setTimeout(() => popup.remove(), 300); // Remove after transition
+        }, 2000); // Display time for the message
+    }, 50); // Small delay for smoother transition
+}
+
+  </script>
+</body>
+</html>
